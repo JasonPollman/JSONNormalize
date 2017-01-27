@@ -44,7 +44,7 @@ Eqivalent to the *replacer* parameter *JSON.stringify* has.
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
-*{string}* A valid JSON string.
+*{undefined}*
 
 #### Example
 
@@ -58,6 +58,37 @@ JSONNormalize.stringify([{ x: 4, y: 3 }, { x: 5, y: 7 }, { y: 2, x: 4 }], (err, 
 JSONNormalize.stringify([{ y: 3, x: 4 }, { y: 7, x: 5 }, { y: 2, x: 4 }], (err, results) => {
   console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
 });
+```
+
+
+### JSONNormalize.stringifySync
+
+*Stringifies objects in a normalized way.*    
+Given an object with any key order, the same string will be returned if the objects are the "equivalent".
+
+> **JSONNormalize.stringify**(value[, replacer], callback)
+
+#### Parameters
+
+**value** *{any}*    
+The value to "stringify".
+
+**replacer** *{function=}*    
+Eqivalent to the *replacer* parameter *JSON.stringify* has.
+
+#### Returns
+*{string}* A valid JSON string.
+
+#### Example
+
+```js
+const JSONNormalize = require('json-normalize'); 
+
+const results = JSONNormalize.stringifySync([{ x: 4, y: 3 }, { x: 5, y: 7 }, { y: 2, x: 4 }]);
+console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
+
+const results = JSONNormalize.stringifySync([{ y: 3, x: 4 }, { y: 7, x: 5 }, { y: 2, x: 4 }]);
+console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
 ```
 
 
@@ -80,7 +111,7 @@ Eqivalent to the *replacer* parameter *JSON.stringify* has.
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
-*{string}* A valid JSON string.
+*{undefined}*
 
 #### Example
 
@@ -95,6 +126,39 @@ JSONNormalize.normalize(
   (err, results) => {
     // Do something...
   });
+```
+
+
+### JSONNormalize.normalizeSync
+
+***An alias for JSONNormalize.stringifySync.***
+
+> **JSONNormalize.normalize**(value[, replacer], callback)
+
+#### Parameters
+
+**value** *{any}*    
+The value to "stringify".
+
+**replacer** *{function=}*    
+Eqivalent to the *replacer* parameter *JSON.stringify* has.
+
+**callback** *{function}*    
+Invoked with two arguments: *error* and *results*.
+
+#### Returns
+*{string}* A valid JSON string.
+
+#### Example
+
+```js
+const JSONNormalize = require('json-normalize'); 
+const results = JSONNormalize.normalizeSync({
+    a: [{ c: 'cat', b: 'bat' }, { z: 'zebra', a: 'apple' }],
+    b: [{ c: 'cheeta', b: 'balloon' }, { z: 'zephyr', a: 'alligator' }],
+});
+
+// Do something with results...
 ```
 
 
@@ -138,7 +202,6 @@ objectMD5({ permissions: ['create', 'delete'], name: 'john doe', id: 0 }, (err, 
   console.log(md5); // Prints: 5520bfd66f9b4a90a0ec08966bc23e6c
 });
 ```
-
 
 
 ### JSONNormalize.sha256
@@ -204,6 +267,15 @@ objectSHA512({ permissions: ['create', 'delete'], name: 'john doe', id: 0 }, (er
   console.log(sha256); // Prints: d99768bd03fbc865944c6045e1c530bbbd0a10bc74cc39faceda4fdc4...
 });
 ```
+
+### JSONNormalize.md5
+Syncronous version of *JSONNormalize.md5*
+
+### JSONNormalize.sha256
+Syncronous version of *JSONNormalize.sha256*
+
+### JSONNormalize.sha512
+Syncronous version of *JSONNormalize.md5*
 
 
 

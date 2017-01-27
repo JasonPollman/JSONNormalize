@@ -1,6 +1,6 @@
 {
   "name": "json-normalize",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Utility library for generating normalized JSON strings",
   "license": "ISC",
   "main": "dist/",

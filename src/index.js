@@ -9,7 +9,7 @@ import crypto from 'crypto';
  * @param {function} done A callback for completion.
  * @returns {string} The JSON.stringified literal value.
  */
-function handleLiteral(recurse, key, value, replacer, done) {
+function handleLiteral(recurse, value, done) {
   let error = null;
   let results;
 
@@ -67,29 +67,17 @@ function handleObject(recurse, obj, replacer, done) {
 }
 
 /**
- * Seralizes an object into "normalized json", which can be used as a key, etc.
- * @param {object} obj The object to serialize.
- * @param {function=} replacer A function that's called for each item, like the replacer
- * function passed to JSON.stringify.
- * @param {function} complete A callback for completion.
- * @returns {string} A "normalized JSON string", which always returns the same string, if passed
- * the same object, regardless of key order.
+ * Handles calling the "replacer" argument to both the "serialize" and "serializeSync" methods.
+ * @param {any} val The value to pass to the replacer function.
+ * @param {string} key The key argument to pass to the replacer function.
+ * @param {function|undefined} replacer The replacer function to call.
+ * @returns {object} An object containing the new value, and "new" replacer function to pass along
+ * in regard to recursion.
  */
-function serialize(obj, replacer, complete, key) {
+function handleReplacer(val, key, replacer) {
+  let value = val;
   let onValue = replacer;
-  let done = complete;
 
-  // Rearrange arguements for replacer/complete parameters based on value
-  if (typeof done === 'undefined' && typeof onValue === 'function') {
-    done = onValue;
-    onValue = undefined;
-  }
-
-  // No reason to continue, no callback was provided.
-  if (typeof done !== 'function') return;
-
-  // Simulates the JSON.stringify replacer function
-  let value = obj;
   if (typeof onValue === 'function') {
     value = onValue(key, value);
     onValue = typeof value === 'object' ? onValue : undefined;
@@ -97,9 +85,65 @@ function serialize(obj, replacer, complete, key) {
     value = undefined;
   }
 
+  return { value, onValue };
+}
+
+/**
+ * Seralizes an object into "normalized json", which can be used as a key, etc.
+ * @param {object} obj The object to serialize.
+ * @param {function=} replacer A function that's called for each item, like the replacer
+ * function passed to JSON.stringify.
+ * @param {function} complete A callback for completion.
+ * @param {string|undefined} key The parent key, used in recursion by "handleObject" and passed
+ * to the replacer function.
+ * @returns {undefined}
+ */
+function serialize(obj, replacer, complete, key) {
+  let replacerFunction = replacer;
+  let done = complete;
+
+  // Rearrange arguements for replacer/complete parameters based on value
+  if (typeof done === 'undefined' && typeof replacerFunction === 'function') {
+    replacerFunction = undefined;
+    done = replacer;
+  }
+
+  // No reason to continue, no callback was provided.
+  if (typeof done !== 'function') return;
+
+  // Simulates the JSON.stringify replacer function
+  const { value, onValue } = handleReplacer(obj, key, replacerFunction);
+
   process.nextTick(() => (!value || typeof value !== 'object'
-    ? handleLiteral(serialize, key, value, onValue, done)
+    ? handleLiteral(serialize, value, done)
     : handleObject(serialize, value, onValue, done)));
+}
+
+/**
+ * Syncronously seralizes an object into "normalized json", which can be used as a key, etc.
+ * @param {object} obj The object to serialize.
+ * @param {function=} replacer A function that's called for each item, like the replacer
+ * function passed to JSON.stringify.
+ * @returns {string} A "normalized JSON string", which always returns the same string, if passed
+ * the same object, regardless of key order.
+ */
+function serializeSync(obj, replacer, complete, key) {
+  let done = complete;
+  let results;
+
+  // Create a callback for when stringification is complete
+  if (typeof done !== 'function') done = (err, value) => { results = value; };
+
+  // Simulates the JSON.stringify replacer function
+  const { value, onValue } = handleReplacer(obj, key, replacer);
+
+  if (!value || typeof value !== 'object') {
+    handleLiteral(serializeSync, value, done);
+  } else {
+    handleObject(serializeSync, value, onValue, done);
+  }
+
+  return results;
 }
 
 /**
@@ -108,11 +152,22 @@ function serialize(obj, replacer, complete, key) {
  * @param {function=} replacer A function that's called for each item, like the replacer
  * function passed to JSON.stringify.
  * @param {function} complete A callback for completion.
- * @returns {string} A "normalized JSON string", which always returns the same string, if passed
- * the same object, regardless of key order.
+ * @returns {undefined}
  */
 export function normalize(obj, replacer, complete) {
   return serialize(obj, replacer, complete);
+}
+
+/**
+ * Exported wrapper around the serializeSync function.
+ * @param {object} obj The object to serialize.
+ * @param {function=} replacer A function that's called for each item, like the replacer
+ * function passed to JSON.stringify.
+ * @returns {string} A "normalized JSON string", which always returns the same string, if passed
+ * the same object, regardless of key order.
+ */
+export function normalizeSync(obj, replacer) {
+  return serializeSync(obj, replacer);
 }
 
 /**
@@ -121,11 +176,22 @@ export function normalize(obj, replacer, complete) {
  * @param {function=} replacer A function that's called for each item, like the replacer
  * function passed to JSON.stringify.
  * @param {function} complete A callback for completion.
- * @returns {string} A "normalized JSON string", which always returns the same string, if passed
- * the same object, regardless of key order.
+ * @returns {undefined}
  */
 export function stringify(...args) {
   return normalize(...args);
+}
+
+/**
+ * Alias for "normalizeSync".
+ * @param {object} obj The object to serialize.
+ * @param {function=} replacer A function that's called for each item, like the replacer
+ * function passed to JSON.stringify.
+ * @returns {string} A "normalized JSON string", which always returns the same string, if passed
+ * the same object, regardless of key order.
+ */
+export function stringifySync(...args) {
+  return normalizeSync(...args);
 }
 
 /**
@@ -142,7 +208,7 @@ export function hash(input, algorithm = 'md5') {
  * Returns the md5 hash for the JSON normalized object passed in.
  * @param {any} input The input to get the md5 hash for.
  * @param {function} done A callback for completion.
- * @returns {string} An md5 hash representing the given object.
+ * @returns {undefined}
  */
 export function md5(input, done) {
   if (typeof done !== 'function') return;
@@ -153,7 +219,7 @@ export function md5(input, done) {
  * Returns the sha256 hash for the JSON normalized object passed in.
  * @param {any} input The input to get the sha256 hash for.
  * @param {function} done A callback for completion.
- * @returns {string} An sha256 hash representing the given object.
+ * @returns {undefined}
  */
 export function sha256(input, done) {
   if (typeof done !== 'function') return;
@@ -164,15 +230,46 @@ export function sha256(input, done) {
  * Returns the sha512 hash for the JSON normalized object passed in.
  * @param {any} input The input to get the sha512 hash for.
  * @param {function} done A callback for completion.
- * @returns {string} An sha512 hash representing the given object.
+ * @returns {undefined}
  */
 export function sha512(input, done) {
   if (typeof done !== 'function') return;
   serialize(input, (e, serialized) => done(e || null, e ? undefined : hash(serialized, 'sha512')));
 }
 
+/**
+ * Returns the md5 hash for the JSON normalized object passed in.
+ * @param {any} input The input to get the md5 hash for.
+ * @param {function} done A callback for completion.
+ * @returns {string} An md5 hash representing the given object.
+ */
+export function md5Sync(input) {
+  return hash(serializeSync(input), 'md5');
+}
+
+/**
+ * Returns the sha256 hash for the JSON normalized object passed in.
+ * @param {any} input The input to get the sha256 hash for.
+ * @param {function} done A callback for completion.
+ * @returns {string} An sha256 hash representing the given object.
+ */
+export function sha256Sync(input) {
+  return hash(serializeSync(input), 'sha256');
+}
+
+/**
+ * Returns the sha512 hash for the JSON normalized object passed in.
+ * @param {any} input The input to get the sha512 hash for.
+ * @param {function} done A callback for completion.
+ * @returns {string} An sha512 hash representing the given object.
+ */
+export function sha512Sync(input) {
+  return hash(serializeSync(input), 'sha512');
+}
+
 // Promisify this library
-const promisified = Promise.promisifyAll(exports);
+const promisified = Promise.promisifyAll({ normalize, stringify, md5, sha256, sha512 });
 
 Object.assign(exports, promisified);
 export default exports;
+
