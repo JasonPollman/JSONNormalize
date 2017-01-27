@@ -41,7 +41,7 @@ The value to "stringify".
 Eqivalent to the *replacer* parameter *JSON.stringify* has.
 
 **callback** *{function}*    
-Provided with two arguments: *error* and *results*.
+Invoked with two arguments: *error* and *results*.
 
 #### Returns
 *{string}* A valid JSON string.
@@ -77,7 +77,7 @@ The value to "stringify".
 Eqivalent to the *replacer* parameter *JSON.stringify* has.
 
 **callback** *{function}*    
-Provided with two arguments: *error* and *results*.
+Invoked with two arguments: *error* and *results*.
 
 #### Returns
 *{string}* A valid JSON string.
@@ -121,7 +121,7 @@ Returns the *md5* hash for the given object
 The value to get the md5 hash of.
 
 **callback** *{function}*
-Provided with two values *error* and *results*.
+Invoked with two arguments: *error* and *results*.
 
 #### Returns
 *{string}* A md5 hash string.
@@ -153,7 +153,7 @@ Returns the *sha256* hash for the given object
 The value to get the sha256 hash of.
 
 **callback** *{function}*
-Provided with two values *error* and *results*.
+Invoked with two arguments: *error* and *results*.
 
 #### Returns
 *{string}* A sha256 hash string.
@@ -186,7 +186,7 @@ Returns the *sha512* hash for the given object
 The value to get the sha512 hash of.
 
 **callback** *{function}*
-Provided with two values *error* and *results*.
+Invoked with two arguments: *error* and *results*.
 
 #### Returns
 *{string}* A sha512 hash string.
