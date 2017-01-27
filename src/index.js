@@ -37,7 +37,7 @@ function handleObject(recurse, obj, replacer, done) {
     ? `[${values.map(v => (v === null ? 'null' : v)).join(',')}]`
     : `{${values.sort().filter(Boolean).join(',')}}`);
 
-  // When an object key is serialized, it calls this method as it's callback.
+  // When an object key is serialized, it calls this method as its callback.
   const onSerialized = (e, value) => {
     if (handledError) {
       return null;

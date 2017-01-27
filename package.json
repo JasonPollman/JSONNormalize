@@ -17,6 +17,15 @@
     "parse",
     "utility"
   ],
+  "homepage": "https://github.com/JasonPollman/JSONNormalize",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JasonPollman/JSONNormalize"
+  },
+  "bugs": {
+    "url": "https://github.com/JasonPollman/JSONNormalize/issues",
+    "email": "jason.j.pollman@gmail.com"
+  },
   "scripts": {
     "compile": "NODE_ENV=production ./node_modules/.bin/babel src -d dist",
     "lint": "./node_modules/.bin/eslint ./src",
