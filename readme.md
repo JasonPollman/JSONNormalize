@@ -123,6 +123,9 @@ The value to get the md5 hash of.
 **callback** *{function}*
 Provided with two values *error* and *results*.
 
+#### Returns
+*{string}* A md5 hash string.
+
 #### Example
 
 ```js
@@ -151,6 +154,9 @@ The value to get the sha256 hash of.
 
 **callback** *{function}*
 Provided with two values *error* and *results*.
+
+#### Returns
+*{string}* A sha256 hash string.
 
 #### Example
 
@@ -181,6 +187,9 @@ The value to get the sha512 hash of.
 
 **callback** *{function}*
 Provided with two values *error* and *results*.
+
+#### Returns
+*{string}* A sha512 hash string.
 
 #### Example
 
