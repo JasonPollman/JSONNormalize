@@ -26,7 +26,6 @@ JSONNormalize.stringify({ hello: 'world', foo: 'bar' }, (err, results) => {}); /
 ## API
 
 ### JSONNormalize.stringify
-
 *Stringifies objects in a normalized way.*    
 Given an object with any key order, the same string will be returned if the objects are the "equivalent".
 
@@ -62,9 +61,7 @@ JSONNormalize.stringify([{ y: 3, x: 4 }, { y: 7, x: 5 }, { y: 2, x: 4 }], (err, 
 
 
 ### JSONNormalize.stringifySync
-
-*Stringifies objects in a normalized way.*    
-Given an object with any key order, the same string will be returned if the objects are the "equivalent".
+Syncronous version of *JSONNormalize.stringify*
 
 > **JSONNormalize.stringify**(value[, replacer], callback)
 
@@ -94,7 +91,6 @@ console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
 
 
 ### JSONNormalize.normalize
-
 ***An alias for JSONNormalize.stringify.***
 
 > **JSONNormalize.normalize**(value[, replacer], callback)
@@ -130,7 +126,6 @@ JSONNormalize.normalize(
 
 
 ### JSONNormalize.normalizeSync
-
 ***An alias for JSONNormalize.stringifySync.***
 
 > **JSONNormalize.normalize**(value[, replacer], callback)
@@ -174,8 +169,7 @@ They're wrappers around node's ``crypto`` module that take the given object,
 
 
 ### JSONNormalize.md5
-
-Returns the *md5* hash for the given object
+Gets the *md5* hash for the given object.
 
 > **JSONNormalize.md5**(value, callback)
 
@@ -188,7 +182,7 @@ The value to get the md5 hash of.
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
-*{string}* A md5 hash string.
+*{undefined}*
 
 #### Example
 
@@ -205,8 +199,7 @@ objectMD5({ permissions: ['create', 'delete'], name: 'john doe', id: 0 }, (err, 
 
 
 ### JSONNormalize.sha256
-
-Returns the *sha256* hash for the given object
+Gets the *sha256* hash for the given object.
 
 > **JSONNormalize.sha256**(value, callback)
 
@@ -219,7 +212,7 @@ The value to get the sha256 hash of.
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
-*{string}* A sha256 hash string.
+*{undefined}*
 
 #### Example
 
@@ -238,8 +231,7 @@ objectSHA256({ permissions: ['create', 'delete'], name: 'john doe', id: 0 }, (er
 
 
 ### JSONNormalize.sha512
-
-Returns the *sha512* hash for the given object
+Gets the *sha512* hash for the given object.
 
 > **JSONNormalize.sha512**(value, callback)
 
@@ -252,7 +244,7 @@ The value to get the sha512 hash of.
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
-*{string}* A sha512 hash string.
+*{undefined}*
 
 #### Example
 
@@ -279,8 +271,7 @@ Syncronous version of *JSONNormalize.md5*
 
 
 
-### *All methods have an async equivalent that returns a promise (via Bluebird)*
-
+### *All methods have an async equivalent that returns a promise (via Bluebird)*    
 For example, *JSONNormalize.stringify*'s promisified version is *JSONNormalize.stringifyAsync*
 
 ```js
