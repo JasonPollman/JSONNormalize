@@ -14,6 +14,55 @@ const basicValues = [
   { a: 1, b: 2, c: undefined, d: null, e: { a: 1, b: 2, c: undefined, d: null } },
 ];
 
+const orderedValues = [
+  { foo: 'bar', bar: 'baz' },
+  { foo: 'bar', b: 1, a: { z: 0, y: 9 } },
+  [{ z: 2, y: 1 }, { z: 2, y: 1 }, { y: 1, z: 2 }],
+  [
+    [{ z: 2, y: 1 }, { z: 2, y: 1 }, { y: 1, z: 2 }],
+    [{ z: 2, y: 1 }, { z: 2, y: 1 }, { y: 1, z: 2 }],
+    [{ z: 2, y: 1 }, { z: 2, y: 1 }, { y: 1, z: 2 }],
+  ],
+  {
+    z: {
+      z: {
+        z: {
+          a: 1,
+        },
+        y: {
+          a: 1,
+        },
+      },
+      y: {
+        z: {
+          a: 1,
+        },
+        y: {
+          a: 1,
+        },
+      },
+    },
+    y: {
+      z: {
+        z: {
+          a: 1,
+        },
+        y: {
+          a: 1,
+        },
+      },
+      y: {
+        z: {
+          a: 1,
+        },
+        y: {
+          a: 1,
+        },
+      },
+    },
+  },
+];
+
 describe('JSONNormalize', () => {
   describe('JSONNormalize.normalize', () => {
     describe('Edge cases', () => {
@@ -33,7 +82,7 @@ describe('JSONNormalize', () => {
       });
     });
 
-    describe('Basic Objects (key ordering irrelevant, JSONNormalize.normalize)', () => {
+    describe('Objects (key ordering irrelevant, JSONNormalize.normalize)', () => {
       basicValues.forEach((value, i) => {
         it(`Should return the same value as JSON.stringify (${i + 1})`, async () => {
           expect(await normalizeAsync(basicValues[i])).to.equal(JSON.stringify(basicValues[i]));
@@ -41,7 +90,23 @@ describe('JSONNormalize', () => {
       });
     });
 
-    describe('Basic Objects (key ordering irrelevant, JSONNormalize.stringify)', () => {
+    describe('Objects (key ordering important)', () => {
+      const expected = [
+        '{"bar":"baz","foo":"bar"}',
+        '{"a":{"y":9,"z":0},"b":1,"foo":"bar"}',
+        '[{"y":1,"z":2},{"y":1,"z":2},{"y":1,"z":2}]',
+        '[[{"y":1,"z":2},{"y":1,"z":2},{"y":1,"z":2}],[{"y":1,"z":2},{"y":1,"z":2},{"y":1,"z":2}],[{"y":1,"z":2},{"y":1,"z":2},{"y":1,"z":2}]]',
+        '{"y":{"y":{"y":{"a":1},"z":{"a":1}},"z":{"y":{"a":1},"z":{"a":1}}},"z":{"y":{"y":{"a":1},"z":{"a":1}},"z":{"y":{"a":1},"z":{"a":1}}}}',
+      ];
+
+      orderedValues.forEach((value, i) => {
+        it(`Should return the normalized JSON stringifed values (${i + 1})`, async () => {
+          expect(await normalizeAsync(orderedValues[i])).to.equal(expected[i]);
+        });
+      });
+    });
+
+    describe('Objects (key ordering irrelevant, JSONNormalize.stringify)', () => {
       basicValues.forEach((value, i) => {
         it(`Should return the same value as JSON.stringify (${i + 1})`, async () => {
           expect(await stringifyAsync(basicValues[i])).to.equal(JSON.stringify(basicValues[i]));
@@ -117,7 +182,7 @@ describe('JSONNormalize', () => {
         });
       });
 
-      describe('Basic Objects (key ordering irrelevant)', () => {
+      describe('Objects (key ordering irrelevant)', () => {
         basicValues.forEach((value, i) => {
           it(`Should return a ${algo} string, equivalent to hash[algorithm](JSON.stringify([value])) (${i + 1})`, async () => {
             expect(await JSONNormalize[`${algo}Async`](value)).to.equal(
