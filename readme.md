@@ -117,10 +117,10 @@ Returns the *md5* hash for the given object
 
 #### Parameters
 
-**value** *{any}*
+**value** *{any}*    
 The value to get the md5 hash of.
 
-**callback** *{function}*
+**callback** *{function}*    
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
@@ -149,10 +149,10 @@ Returns the *sha256* hash for the given object
 
 #### Parameters
 
-**value** *{any}*
+**value** *{any}*    
 The value to get the sha256 hash of.
 
-**callback** *{function}*
+**callback** *{function}*    
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
@@ -182,10 +182,10 @@ Returns the *sha512* hash for the given object
 
 #### Parameters
 
-**value** *{any}*
+**value** *{any}*    
 The value to get the sha512 hash of.
 
-**callback** *{function}*
+**callback** *{function}*    
 Invoked with two arguments: *error* and *results*.
 
 #### Returns
