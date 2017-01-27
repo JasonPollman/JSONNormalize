@@ -266,13 +266,13 @@ objectSHA512({ permissions: ['create', 'delete'], name: 'john doe', id: 0 }, (er
 });
 ```
 
-### JSONNormalize.md5
+### JSONNormalize.md5Sync
 Syncronous version of *JSONNormalize.md5*
 
-### JSONNormalize.sha256
+### JSONNormalize.sha256Sync
 Syncronous version of *JSONNormalize.sha256*
 
-### JSONNormalize.sha512
+### JSONNormalize.sha512Sync
 Syncronous version of *JSONNormalize.md5*
 
 
