@@ -8,6 +8,15 @@
     "name": "Jason James Pollman",
     "email": "jason.j.pollman@gmail.com"
   },
+  "keywords": [
+    "json",
+    "stringify",
+    "normalize",
+    "serialize",
+    "caching",
+    "parse",
+    "utility"
+  ],
   "scripts": {
     "compile": "NODE_ENV=production ./node_modules/.bin/babel src -d dist",
     "lint": "./node_modules/.bin/eslint ./src",
