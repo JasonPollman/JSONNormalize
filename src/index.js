@@ -38,7 +38,7 @@ function handleObject(recurse, obj, replacer, done) {
     : `{${values.sort().filter(Boolean).join(',')}}`);
 
   // When an object key is serialized, it calls this method as its callback.
-  const onSerialized = (e, value) => {
+  const onSerialized = (e, value, index) => {
     if (handledError) {
       return null;
     } else if (e) {
@@ -46,19 +46,19 @@ function handleObject(recurse, obj, replacer, done) {
       return done(e);
     }
 
-    values.push(typeof value === 'undefined' ? null : value);
+    values[index] = typeof value === 'undefined' ? null : value;
     if (++complete !== keys.length) return null;
     return onComplete();
   };
 
   // Serializes each item in an array.
-  const mapArray = key =>
-    recurse(typeof obj[key] === 'undefined' ? null : obj[key], replacer, onSerialized, key);
+  const mapArray = (key, index) =>
+    recurse(typeof obj[key] === 'undefined' ? null : obj[key], replacer, (e, val) => onSerialized(e, val, index), key);
 
   // Serializes each item in an object.
-  const mapObject = key => (typeof obj[key] === 'undefined'
+  const mapObject = (key, index) => (typeof obj[key] === 'undefined'
     ? onSerialized(null, null)
-    : recurse(obj[key], replacer, (e, val) => onSerialized(e, typeof val === 'undefined' ? null : `"${key}":${val}`), key));
+    : recurse(obj[key], replacer, (e, val) => onSerialized(e, typeof val === 'undefined' ? null : `"${key}":${val}`, index), key));
 
   // Map the object's keys to its respective object type function
   return keys.length === 0
@@ -272,4 +272,3 @@ const promisified = Promise.promisifyAll({ normalize, stringify, md5, sha256, sh
 
 Object.assign(exports, promisified);
 export default exports;
-
