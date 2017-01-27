@@ -1,0 +1,4 @@
+--recursive
+--require babel-register
+--require ./test/mocha.init.js
+--ui bdd

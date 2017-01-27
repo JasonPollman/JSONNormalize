@@ -1,0 +1,67 @@
+{
+  "name": "json-normalize",
+  "version": "1.0.0",
+  "description": "Utility library for generating normalized JSON strings",
+  "license": "ISC",
+  "main": "dist/",
+  "author": {
+    "name": "Jason James Pollman",
+    "email": "jason.j.pollman@gmail.com"
+  },
+  "scripts": {
+    "compile": "NODE_ENV=production ./node_modules/.bin/babel src -d dist",
+    "lint": "./node_modules/.bin/eslint ./src",
+    "test": "./node_modules/.bin/mocha ./test/unit/**",
+    "coverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha ./test/unit/**",
+    "prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.22.1",
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-istanbul": "^3.1.2",
+    "babel-plugin-source-map-support-for-6": "0.0.5",
+    "babel-plugin-transform-builtin-extend": "^1.1.0",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.20.2",
+    "babel-plugin-transform-promise-to-bluebird": "^1.1.1",
+    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-polyfill": "^6.20.0",
+    "babel-preset-latest": "^6.22.0",
+    "babel-register": "^6.22.0",
+    "babel-runtime": "^6.22.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.9.0",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
+    "nyc": "^10.1.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.7"
+  },
+  "nyc": {
+    "include": [
+      "src/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "cache": true,
+    "lines": 99,
+    "statements": 99,
+    "functions": 99,
+    "branches": 99,
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary"
+    ]
+  }
+}
