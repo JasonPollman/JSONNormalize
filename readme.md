@@ -50,14 +50,14 @@ Provided with two arguments: *error* and *results*.
 
 ```js
 const JSONNormalize = require('json-normalize'); 
-JSONNormalize.stringify(
-  {
-    a: [{ c: 'cat', b: 'bat' }, { z: 'zebra', a: 'apple' }],
-    b: [{ c: 'cheeta', b: 'balloon' }, { z: 'zephyr', a: 'alligator' }],
-  },
-  (err, results) => {
-    // Do something...
-  });
+
+JSONNormalize.stringify([{ x: 4, y: 3 }, { x: 5, y: 7 }, { y: 2, x: 4 }], (err, results) => {
+  console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
+});
+
+JSONNormalize.stringify([{ y: 3, x: 4 }, { y: 7, x: 5 }, { y: 2, x: 4 }], (err, results) => {
+  console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
+});
 ```
 
 
@@ -86,9 +86,15 @@ Provided with two arguments: *error* and *results*.
 
 ```js
 const JSONNormalize = require('json-normalize'); 
-JSONNormalize.normalize([{ x: 4, y: 3 }, { x: 5, y: 7 }, { y: 2, x: 4 }], (err, results) => {
-  console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
-});
+
+JSONNormalize.normalize(
+  {
+    a: [{ c: 'cat', b: 'bat' }, { z: 'zebra', a: 'apple' }],
+    b: [{ c: 'cheeta', b: 'balloon' }, { z: 'zephyr', a: 'alligator' }],
+  },
+  (err, results) => {
+    // Do something...
+  });
 ```
 
 
