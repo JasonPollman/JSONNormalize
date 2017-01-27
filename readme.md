@@ -19,8 +19,14 @@ the same JSON string every time.
 ```js
 // Using JSON Normalize
 const JSONNormalize = require('json-normalize'); 
-JSONNormalize.stringify({ foo: 'bar', hello: 'world' }, (err, results) => {}); // => {"foo":"bar","hello":"world"}
-JSONNormalize.stringify({ hello: 'world', foo: 'bar' }, (err, results) => {}); // => {"foo":"bar","hello":"world"}
+
+JSONNormalize.stringify({ foo: 'bar', hello: 'world' }, (err, results) => {
+  // results === {"foo":"bar","hello":"world"}
+});
+
+JSONNormalize.stringify({ hello: 'world', foo: 'bar' }, (err, results) => {
+  // results === {"foo":"bar","hello":"world"}
+});
 ```
 
 ## API
