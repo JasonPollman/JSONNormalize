@@ -11,50 +11,24 @@ This makes it impractical to use stringified values for hashing or caching.
 // Using JSON.stringify
 JSON.stringify({ foo: 'bar', hello: 'world' }); // => {"foo":"bar","hello":"world"}
 JSON.stringify({ hello: 'world', foo: 'bar' }); // => {"hello":"world","foo":"bar"}
+```
 
+``JSONNormalize`` stringifies objects in a "normalized" way by sorting object keys to produce
+the same JSON string every time.
+
+```js
 // Using JSON Normalize
-const normalizeJSON = require('json-normalize').normalize; 
-normalizeJSON({ foo: 'bar', hello: 'world' }, (err, results) => {}); // => {"foo":"bar","hello":"world"}
-normalizeJSON({ hello: 'world', foo: 'bar' }, (err, results) => {}); // => {"foo":"bar","hello":"world"}
+const JSONNormalize = require('json-normalize'); 
+JSONNormalize.stringify({ foo: 'bar', hello: 'world' }, (err, results) => {}); // => {"foo":"bar","hello":"world"}
+JSONNormalize.stringify({ hello: 'world', foo: 'bar' }, (err, results) => {}); // => {"foo":"bar","hello":"world"}
 ```
 
 ## API
 
-### JSONNormalize.normalize
+### JSONNormalize.stringify
 
 *Stringifies objects in a normalized way.*    
 Given an object with any key order, the same string will be returned if the objects are the "equivalent".
-
-> **JSONNormalize.normalize**(value[, replacer], callback)
-
-#### Parameters
-
-**value** *{any}*    
-The value to "stringify".
-
-**replacer** *{function=}*    
-Eqivalent to the *replacer* parameter *JSON.stringify* has.
-
-**callback** *{function}*    
-Provided with two arguments: *error* and *results*.
-
-#### Returns
-*{string}* A valid JSON string.
-
-#### Example
-
-```js
-const JSONNormalize = require('json-normalize'); 
-JSONNormalize.normalize([{ x: 4, y: 3 }, { x: 5, y: 7 }, { y: 2, x: 4 }], (err, results) => {
-  console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
-});
-```
-
-
-
-### JSONNormalize.stringify
-
-***An alias for JSONNormalize.normalize.***
 
 > **JSONNormalize.stringify**(value[, replacer], callback)
 
@@ -84,6 +58,37 @@ JSONNormalize.stringify(
   (err, results) => {
     // Do something...
   });
+```
+
+
+
+### JSONNormalize.normalize
+
+***An alias for JSONNormalize.stringify.***
+
+> **JSONNormalize.normalize**(value[, replacer], callback)
+
+#### Parameters
+
+**value** *{any}*    
+The value to "stringify".
+
+**replacer** *{function=}*    
+Eqivalent to the *replacer* parameter *JSON.stringify* has.
+
+**callback** *{function}*    
+Provided with two arguments: *error* and *results*.
+
+#### Returns
+*{string}* A valid JSON string.
+
+#### Example
+
+```js
+const JSONNormalize = require('json-normalize'); 
+JSONNormalize.normalize([{ x: 4, y: 3 }, { x: 5, y: 7 }, { y: 2, x: 4 }], (err, results) => {
+  console.log(results); // Prints: [{"x":4,"y":3},{"x":5,"y":7},{"x":4,"y":2}]
+});
 ```
 
 
