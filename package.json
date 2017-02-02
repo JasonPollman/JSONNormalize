@@ -1,6 +1,6 @@
 {
   "name": "json-normalize",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Utility library for generating normalized JSON strings",
   "license": "ISC",
   "main": "dist/",
@@ -48,7 +48,6 @@
     "babel-polyfill": "^6.20.0",
     "babel-preset-latest": "^6.22.0",
     "babel-register": "^6.22.0",
-    "babel-runtime": "^6.22.0",
     "chai": "^3.5.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
@@ -60,6 +59,7 @@
     "nyc": "^10.1.2"
   },
   "dependencies": {
+    "babel-runtime": "^6.22.0",
     "bluebird": "^3.4.7"
   },
   "nyc": {
